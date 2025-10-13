@@ -2,7 +2,10 @@ package com.sky.service.impl;
 
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
@@ -14,9 +17,11 @@ import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,5 +80,33 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .name(employee.getName())
                 .token(token)
                 .build();
+    }
+
+    /**
+     * 新增员工
+     * @param employeeDTO 新增员工对象
+     */
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        // 设置默认密码
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+
+        // 设置默认状态
+        employee.setStatus(StatusConstant.ENABLE);
+
+        // 设置时间
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // TODO 校验正确的身份证号和手机号
+
+        // 设置操作者
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        employeeMapper.insert(employee);
     }
 }

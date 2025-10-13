@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
@@ -27,7 +28,7 @@ public class EmployeeController {
      * @return Result
      */
     @PostMapping("/login")
-    public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
+    public Result login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
         EmployeeLoginVO employeeLoginVO = employeeService.login(employeeLoginDTO);
@@ -41,8 +42,19 @@ public class EmployeeController {
      * @return Result
      */
     @PostMapping("/logout")
-    public Result<String> logout() {
+    public Result logout() {
         return Result.success();
     }
 
+    /**
+     * @param employeeDTO 新增员工对象
+     * @return Result
+     */
+    @PostMapping
+    public Result save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工：{}", employeeDTO);
+        employeeService.save(employeeDTO);
+
+        return Result.success();
+    }
 }
