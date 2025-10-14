@@ -9,7 +9,6 @@ import java.io.Serializable;
  */
 @Data
 public class Result implements Serializable {
-
     private Integer code; //编码：1成功，0和其它数字为失败
     private String msg; //错误信息
     private Object data; //数据

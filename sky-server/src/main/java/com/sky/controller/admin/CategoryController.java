@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 分类管理
  */
@@ -43,5 +45,32 @@ public class CategoryController {
         PageResult<Category> result = categoryService.page(categoryPageQueryDTO);
 
         return Result.success(result);
+    }
+
+    /**
+     * 根据类型查询分类
+     * @param type 类型
+     * @return Result
+     */
+    @GetMapping("/list")
+    public Result list(@RequestParam(required = false) Integer type) {
+        log.info("查询类型为{}的分类", type);
+        List<Category> list = categoryService.list(type);
+
+        return Result.success(list);
+    }
+
+    /**
+     * 启用或禁用分类
+     * @param status 状态
+     * @param id 分类id
+     * @return Result
+     */
+    @PostMapping("/status/{status}")
+    public Result switchStatus(@PathVariable Integer status,@RequestParam Long id) {
+        log.info("启用禁用分类[id：{}, status：{}]", id, status);
+        categoryService.switchStatus(status, id);
+
+        return Result.success();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +54,30 @@ public class CategoryServiceImpl implements CategoryService {
                 .startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize())
                 .doSelectPage(() -> categoryMapper.pageQuery(categoryPageQueryDTO));
         return new PageResult<>(p.getTotal(), p.getResult());
+    }
+
+    /**
+     * 根据类型查询
+     * @param type 类型
+     * @return List
+     */
+    @Override
+    public List<Category> list(Integer type) {
+        return categoryMapper.getByType(type);
+    }
+
+    /**
+     * 启用禁用分类
+     * @param status 状态
+     * @param id     分类id
+     */
+    @Override
+    public void switchStatus(Integer status, Long id) {
+        Category category = Category.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        categoryMapper.update(category);
     }
 }
