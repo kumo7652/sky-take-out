@@ -1,8 +1,10 @@
 package com.sky.controller.admin;
 
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordDTO;
 import com.sky.entity.Employee;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -108,6 +110,18 @@ public class EmployeeController {
         log.info("更新员工：{}", employeeDTO);
         employeeService.update(employeeDTO);
 
+        return Result.success();
+    }
+
+    /**
+     * 更改用户密码
+     * @param passwordDTO 更新密码对象
+     * @return Result
+     */
+    @PutMapping("/editPassword")
+    public Result editPassword(@RequestBody PasswordDTO passwordDTO) {
+        log.info("员工{}更改密码", BaseContext.getCurrentId());
+        employeeService.changePassword(passwordDTO);
         return Result.success();
     }
 }
