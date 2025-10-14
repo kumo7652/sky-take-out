@@ -106,8 +106,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
 
-        // TODO 校验正确的身份证号和手机号
-
         // 设置操作者
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
@@ -126,5 +124,22 @@ public class EmployeeServiceImpl implements EmployeeService {
                     .doSelectPage(() -> employeeMapper.pageQuery(employeePageQueryDTO));
 
             return new PageResult<>(p.getTotal(), p.getResult());
+    }
+
+    /**
+     * 启用禁用员工
+     * @param status 员工状态
+     * @param id     员工id
+     */
+    @Override
+    public void switchStatus(Integer status, Long id) {
+        // 创建员工实体对象
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        // 更新
+        employeeMapper.update(employee);
     }
 }
