@@ -1,10 +1,14 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.mapper.CategoryMapper;
+import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -36,5 +40,18 @@ public class CategoryServiceImpl implements CategoryService {
         category.setStatus(StatusConstant.DISABLE);
 
         categoryMapper.insert(category);
+    }
+
+    /**
+     * 分页查询分类对象
+     * @param categoryPageQueryDTO 查询条件对象
+     * @return PageResult
+     */
+    @Override
+    public PageResult<Category> page(CategoryPageQueryDTO categoryPageQueryDTO) {
+        Page<Category> p = PageHelper
+                .startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize())
+                .doSelectPage(() -> categoryMapper.pageQuery(categoryPageQueryDTO));
+        return new PageResult<>(p.getTotal(), p.getResult());
     }
 }

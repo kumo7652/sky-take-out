@@ -7,10 +7,10 @@ import java.io.Serializable;
 @Data
 public class CategoryPageQueryDTO implements Serializable {
     //页码
-    private int page;
+    private int page = 1;
 
     //每页记录数
-    private int pageSize;
+    private int pageSize = 10;
 
     //分类名称
     private String name;
