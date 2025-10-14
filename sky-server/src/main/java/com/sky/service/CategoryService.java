@@ -34,4 +34,10 @@ public interface CategoryService {
      * @param id 分类id
      */
     void switchStatus(Integer status, Long id);
+
+    /**
+     * 修改分类
+     * @param categoryDTO 更新分类对象
+     */
+    void update(CategoryDTO categoryDTO);
 }
