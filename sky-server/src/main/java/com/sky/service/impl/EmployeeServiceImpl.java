@@ -1,5 +1,7 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
@@ -7,12 +9,14 @@ import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
@@ -37,6 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeLoginDTO 用于传输员工登录对象
      * @return EmployeeLoginVO
      */
+    @Override
     public EmployeeLoginVO login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
@@ -108,5 +113,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
+    }
+
+    /**
+     * @param employeePageQueryDTO 分页查询参数对象
+     * @return PageResult
+     */
+    @Override
+    public PageResult<Employee> page(EmployeePageQueryDTO employeePageQueryDTO) {
+            Page<Employee> p = PageHelper
+                    .startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize())
+                    .doSelectPage(() -> employeeMapper.pageQuery(employeePageQueryDTO));
+
+            return new PageResult<>(p.getTotal(), p.getResult());
     }
 }

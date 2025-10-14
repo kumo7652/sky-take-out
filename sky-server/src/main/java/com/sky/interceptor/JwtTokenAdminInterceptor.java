@@ -27,9 +27,9 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull Object handler) {
-        //判断当前拦截到的是Controller的方法还是其他资源
+        // 判断当前拦截到的是Controller的方法还是其他资源
         if (!(handler instanceof HandlerMethod)) {
-            //当前拦截到的不是动态方法，直接放行
+            // 当前拦截到的不是动态方法，直接放行
             return true;
         }
 
