@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,14 +103,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 设置默认状态
         employee.setStatus(StatusConstant.ENABLE);
 
-        // 设置时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        // 设置操作者
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
         employeeMapper.insert(employee);
     }
 
@@ -164,9 +155,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
 
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
         employeeMapper.update(employee);
     }
 
@@ -188,7 +176,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 更新密码
         employee.setPassword(DigestUtils.md5DigestAsHex(passwordDTO.getNewPassword().getBytes()));
-        employee.setUpdateTime(LocalDateTime.now());
 
         employeeMapper.update(employee);
     }
