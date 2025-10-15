@@ -6,3 +6,10 @@ sky:
     database: sky_take_out
     username: root
     password: 1234
+
+  aliyun:
+    oss:
+      endpoint: https://oss-cn-beijing.aliyuncs.com
+      bucket-name: springboot-demo76
+      region: cn-beijing
+
