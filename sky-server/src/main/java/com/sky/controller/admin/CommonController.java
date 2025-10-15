@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
+/**
+ * 通用接口
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
