@@ -100,9 +100,26 @@ public class DishServiceImpl implements DishService {
                throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
            }
         });
+
         // 删除菜品
         dishMapper.deleteBatch(ids);
         // 删除菜品对应风味
         dishFlavorMapper.deleteBatch(ids);
+    }
+
+    /**
+     * 启售禁售菜品
+     * @param status 菜品状态
+     * @param id     菜品id
+     */
+    @Override
+    public void switchStatus(Integer status, Long id) {
+        // 构建菜品对象
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        dishMapper.update(dish);
     }
 }

@@ -59,4 +59,18 @@ public class DishController {
 
         return Result.success();
     }
+
+    /**
+     * 启售禁售菜品
+     * @param status 菜品状态
+     * @param id 菜品id
+     * @return Result
+     */
+    @PostMapping("/status/{status}")
+    public Result switchStatus(@PathVariable Integer status, @RequestParam Long id) {
+        log.info("启售禁售菜品：{}", id);
+        dishService.switchStatus(status, id);
+
+        return Result.success();
+    }
 }
