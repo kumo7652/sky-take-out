@@ -32,4 +32,17 @@ public interface DishService {
      * @param id 菜品id
      */
     void switchStatus(Integer status, Long id);
+
+    /**
+     * 根据id查询菜品
+     * @param id 菜品id
+     * @return DishVO
+     */
+    DishVO getDishVOById(Long id);
+
+    /**
+     * 更新菜品信息
+     * @param dishDTO 更新菜品信息对象
+     */
+    void update(DishDTO dishDTO);
 }

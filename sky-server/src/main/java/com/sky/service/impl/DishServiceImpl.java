@@ -122,4 +122,61 @@ public class DishServiceImpl implements DishService {
 
         dishMapper.update(dish);
     }
+
+    /**
+     * 根据id查询菜品
+     * @param id 菜品id
+     * @return DishVO
+     */
+    @Override
+    public DishVO getDishVOById(Long id) {
+        // 查询菜品信息
+        Dish dish = dishMapper.getById(id);
+
+        // 查询菜品风味信息
+        List<DishFlavor> flavors = dishFlavorMapper.getFlavorByDishId(id);
+
+        // 复制信息
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(flavors);
+
+        return dishVO;
+    }
+
+    /**
+     * 更新菜品信息
+     * @param dishDTO 更新菜品信息对象
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(DishDTO dishDTO) {
+        // 解析数据
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+
+        // 更新菜品数据
+        dishMapper.update(dish);
+
+        // 更新菜品风味数据
+        if(flavors != null && !flavors.isEmpty()) {
+            // 使用先删除再插入的方式更新
+            dishFlavorMapper.deleteBatch(List.of(dish.getId()));
+
+            log.info("尝试更新插入风味数：{}", flavors.size());
+
+            // 过滤并设置菜品ID
+            flavors = flavors.stream()
+                    .filter(flavor -> !"".equals(flavor.getName()) && !flavor.getValue().isEmpty())
+                    .peek(flavor -> flavor.setDishId(dishDTO.getId()))
+                    .collect(Collectors.toList());
+
+            // 有效风味数不为0时，插入风味表
+            log.info("更新插入有效风味数：{}", flavors.size());
+            if(!flavors.isEmpty()){
+                dishFlavorMapper.insert(flavors);
+            }
+        }
+    }
 }

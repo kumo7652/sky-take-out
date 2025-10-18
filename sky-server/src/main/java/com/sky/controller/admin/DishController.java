@@ -73,4 +73,30 @@ public class DishController {
 
         return Result.success();
     }
+
+    /**
+     * 根据id查询菜品
+     * @param id 菜品id
+     * @return Result
+     */
+    @GetMapping("/{id}")
+    public Result getDishById(@PathVariable Long id) {
+        log.info("查询菜品{}信息", id);
+        DishVO dishVO = dishService.getDishVOById(id);
+
+        return Result.success(dishVO);
+    }
+
+    /**
+     * 更新菜品信息
+     * @param dishDTO 更新菜品信息对象
+     * @return Result
+     */
+    @PutMapping
+    public Result update(@RequestBody DishDTO dishDTO) {
+        log.info("更新菜品信息：{}",  dishDTO);
+        dishService.update(dishDTO);
+
+        return Result.success();
+    }
 }
