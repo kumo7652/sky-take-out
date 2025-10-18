@@ -8,6 +8,8 @@ import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface DishMapper {
     /**
@@ -16,6 +18,13 @@ public interface DishMapper {
      */
     @AutoFill(OperationType.INSERT)
     void insert(Dish dish);
+
+    /**
+     * 通过id查询菜品
+     * @param id 菜品id
+     * @return Dish
+     */
+    Dish getById(Long id);
 
     /**
      * 查询分类下是否有关联的菜品
@@ -30,4 +39,10 @@ public interface DishMapper {
      * @return Page
      */
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 批量删除菜品
+     * @param ids 菜品id
+     */
+    void deleteBatch(List<Long> ids);
 }

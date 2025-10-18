@@ -7,6 +7,14 @@
         values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
     </insert>
 
+    <delete id="deleteBatch">
+        delete from dish
+        where id in
+        <foreach collection="ids" item="id" separator="," open= "(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="countByCategoryId" resultType="java.lang.Integer">
         select count(0)
         from dish
@@ -21,5 +29,11 @@
             <if test="name != null">and dish.name like concat('%', #{name},'%')</if>
             <if test="status != null">and dish.status = #{status}</if>
         </where>
+    </select>
+
+    <select id="getById" resultType="com.sky.entity.Dish">
+        select *
+        from dish
+        where id = #{id}
     </select>
 </mapper>
