@@ -12,4 +12,14 @@
         from dish
         where category_id = #{categoryId}
     </select>
+
+    <select id="pageQuery" resultType="com.sky.vo.DishVO">
+        select dish.*, category.name categoryName
+        from dish left join category on dish.category_id = category.id
+        <where>
+            <if test="categoryId != null">dish.category_id = #{categoryId}</if>
+            <if test="name != null">and dish.name like concat('%', #{name},'%')</if>
+            <if test="status != null">and dish.status = #{status}</if>
+        </where>
+    </select>
 </mapper>

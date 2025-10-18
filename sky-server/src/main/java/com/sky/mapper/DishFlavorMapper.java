@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface DishFlavorMapper {
     /**
-     * 批量天剑菜品风味
+     * 批量添加菜品风味
      * @param flavors 风味
      */
     void insert(List<DishFlavor> flavors);

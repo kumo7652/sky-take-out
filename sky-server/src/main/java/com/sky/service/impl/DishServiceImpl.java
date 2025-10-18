@@ -1,11 +1,16 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -38,20 +43,34 @@ public class DishServiceImpl implements DishService {
         // 插入菜品表
         dishMapper.insert(dish);
 
-        // 插入菜品口味表
+        // 处理菜品口味表
         if  (dishFlavors != null && !dishFlavors.isEmpty()) {
             log.info("尝试插入风味数：{}", dishFlavors.size());
 
-            // 使用 Stream 过滤并设置菜品ID
+            // 过滤并设置菜品ID
             List<DishFlavor> flavors = dishFlavors.stream()
                     .filter(flavor -> !"".equals(flavor.getName()) && !flavor.getValue().isEmpty())
                     .peek(flavor -> flavor.setDishId(dishDTO.getId()))
                     .collect(Collectors.toList());
 
+            // 有效风味数不为0时，插入风味表
             log.info("有效风味数：{}", flavors.size());
             if(!flavors.isEmpty()){
                 dishFlavorMapper.insert(flavors);
             }
         }
+    }
+
+    /**
+     * 分页查询菜品
+     * @param dishPageQueryDTO 分页查询菜品对象
+     */
+    @Override
+    public PageResult<DishVO> page(DishPageQueryDTO dishPageQueryDTO) {
+        Page<DishVO> p = PageHelper
+                .startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize())
+                .doSelectPage(() -> dishMapper.pageQuery(dishPageQueryDTO));
+
+        return new PageResult<>(p.getTotal(), p.getResult());
     }
 }
