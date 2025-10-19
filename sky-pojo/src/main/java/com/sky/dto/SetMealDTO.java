@@ -4,7 +4,6 @@ import com.sky.entity.SetMealDish;
 import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,6 +30,5 @@ public class SetMealDTO implements Serializable {
     private String image;
 
     //套餐菜品关系
-    private List<SetMealDish> setMealDishes = new ArrayList<>();
-
+    private List<SetMealDish> setMealDishes;
 }
