@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -79,6 +81,19 @@ public class SetMealController {
     public Result update(@RequestBody SetMealDTO setMealDTO) {
         log.info("修改套餐：{}", setMealDTO);
         setMealService.update(setMealDTO);
+
+        return Result.success();
+    }
+
+    /**
+     * 删除套餐
+     * @param ids 套餐id
+     * @return Result
+     */
+    @DeleteMapping
+    public Result delete(@RequestParam List<Long> ids) {
+        log.info("删除套餐：{}", ids.toString());
+        setMealService.delete(ids);
 
         return Result.success();
     }

@@ -22,6 +22,14 @@
         where id = #{id}
     </update>
 
+    <delete id="deleteBatch">
+        delete from set_meal
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <select id="countByCategoryId" resultType="java.lang.Integer">
         select count(0)
         from set_meal

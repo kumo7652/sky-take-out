@@ -30,4 +30,11 @@
         from set_meal_dish
         where set_meal_id = #{setMealId}
     </select>
+
+    <select id="getDishBySetMealId" resultType="com.sky.entity.Dish">
+        select d.*
+        from set_meal_dish smd join dish d
+        on smd.dish_id = d.id
+        where smd.set_meal_id = #{setMealId}
+    </select>
 </mapper>

@@ -5,6 +5,8 @@ import com.sky.dto.SetMealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.vo.SetMealVO;
 
+import java.util.List;
+
 public interface SetMealService {
     /**
      * 新增菜品信息
@@ -38,4 +40,10 @@ public interface SetMealService {
      * @param setMealDTO 修改套餐对象
      */
     void update(SetMealDTO setMealDTO);
+
+    /**
+     * 批量删除套餐
+     * @param ids 套餐id
+     */
+    void delete(List<Long> ids);
 }

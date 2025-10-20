@@ -8,6 +8,8 @@ import com.sky.enumeration.OperationType;
 import com.sky.vo.SetMealVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface SetMealMapper {
     /**
@@ -43,4 +45,10 @@ public interface SetMealMapper {
      * @return 套餐信息
      */
     SetMeal getById(Long id);
+
+    /**
+     * 批量删除套餐
+     * @param ids 套餐id
+     */
+    void deleteBatch(List<Long> ids);
 }
