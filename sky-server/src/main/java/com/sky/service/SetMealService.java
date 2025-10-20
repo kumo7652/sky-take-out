@@ -25,4 +25,11 @@ public interface SetMealService {
      * @return 套餐信息
      */
     SetMealVO getSetMealVOById(Long id);
+
+    /**
+     * 启用停用套餐
+     * @param status 套餐状态
+     * @param id 套餐id
+     */
+    void switchStatus(Integer status, Long id);
 }

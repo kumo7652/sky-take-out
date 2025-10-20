@@ -55,4 +55,18 @@ public class SetMealController {
 
         return Result.success(setMealVO);
     }
+
+    /**
+     * 启用停用套餐
+     * @param status 套餐状态
+     * @param id 套餐id
+     * @return Result
+     */
+    @PostMapping("/status/{status}")
+    public Result switchStatus(@PathVariable Integer status, @RequestParam Long id) {
+        log.info("启用停用套餐：[{}, {}]", id, status);
+        setMealService.switchStatus(status, id);
+
+        return Result.success();
+    }
 }

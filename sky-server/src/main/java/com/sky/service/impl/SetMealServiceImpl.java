@@ -81,4 +81,20 @@ public class SetMealServiceImpl implements SetMealService {
         setMealVO.setSetMealDishes(setMealDishes);
         return setMealVO;
     }
+
+    /**
+     * 启用停用套餐
+     * @param status 套餐状态
+     * @param id     套餐id
+     */
+    @Override
+    public void switchStatus(Integer status, Long id) {
+        // 构建套餐对象
+        SetMeal setMeal = SetMeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        setMealMapper.update(setMeal);
+    }
 }
