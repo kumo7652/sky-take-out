@@ -10,6 +10,7 @@ import com.sky.entity.Dish;
 import com.sky.entity.SetMeal;
 import com.sky.entity.SetMealDish;
 import com.sky.exception.DeletionNotAllowedException;
+import com.sky.exception.SetMealEnableFailedException;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
@@ -100,7 +101,7 @@ public class SetMealServiceImpl implements SetMealService {
             // 菜品启售时，套餐可以启售禁售
             // 菜品禁售时，套餐无法启售
             if (dish.getStatus().equals(StatusConstant.DISABLE)) {
-                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                throw new SetMealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
             }
         }
 
