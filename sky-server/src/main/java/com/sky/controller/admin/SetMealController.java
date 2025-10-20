@@ -1,14 +1,14 @@
 package com.sky.controller.admin;
 
 import com.sky.dto.SetMealDTO;
+import com.sky.dto.SetMealPageQueryDTO;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
+import com.sky.vo.SetMealVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -28,5 +28,18 @@ public class SetMealController {
         setMealService.save(setMealDTO);
 
         return Result.success();
+    }
+
+    /**
+     * 分页查询套餐信息
+     * @param setMealPageQueryDTO 分页查询参数
+     * @return Result
+     */
+    @GetMapping("/page")
+    public Result page(SetMealPageQueryDTO setMealPageQueryDTO) {
+        log.info("分页查询套餐：{}", setMealPageQueryDTO);
+        PageResult<SetMealVO> pageResult = setMealService.page(setMealPageQueryDTO);
+
+        return Result.success(pageResult);
     }
 }

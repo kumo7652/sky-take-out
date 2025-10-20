@@ -12,4 +12,16 @@
         from set_meal
         where category_id = #{categoryId}
     </select>
+
+    <select id="pageQuery" resultType="com.sky.vo.SetMealVO">
+        select sm.*, c.name categoryName
+        from set_meal sm join category c
+        on sm.category_id = c.id
+        <where>
+            <if test="categoryId != null">sm.category_id = #{categoryId}</if>
+            <if test="name != null and name != ''">and sm.name like concat('%',#{name},'%')</if>
+            <if test="status != null">and sm.status = #{status}</if>
+        </where>
+        order by sm.create_time desc
+    </select>
 </mapper>

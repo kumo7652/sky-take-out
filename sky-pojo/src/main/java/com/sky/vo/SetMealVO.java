@@ -1,5 +1,6 @@
 package com.sky.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sky.entity.SetMealDish;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -44,5 +44,6 @@ public class SetMealVO implements Serializable {
     private String categoryName;
 
     //套餐和菜品的关联关系
-    private List<SetMealDish> setMealDishes = new ArrayList<>();
+    @JsonProperty("setmealDishes")
+    private List<SetMealDish> setMealDishes;
 }
