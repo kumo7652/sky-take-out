@@ -19,4 +19,11 @@ public interface SetMealDishMapper {
      * @param setMealDishes 关联信息集合
      */
     void insert(List<SetMealDish> setMealDishes);
+
+    /**
+     * 根据套餐id查询关联菜品
+     * @param setMealId 套餐id
+     * @return 菜品信息
+     */
+    List<SetMealDish> getBySetMealId(Long setMealId);
 }

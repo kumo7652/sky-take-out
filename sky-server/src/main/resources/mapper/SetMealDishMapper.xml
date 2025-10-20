@@ -16,4 +16,10 @@
         from set_meal_dish
         where dish_id = #{dishId}
     </select>
+
+    <select id="getBySetMealId" resultType="com.sky.entity.SetMealDish">
+        select *
+        from set_meal_dish
+        where set_meal_id = #{setMealId}
+    </select>
 </mapper>

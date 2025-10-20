@@ -18,4 +18,11 @@ public interface SetMealService {
      * @return PageResult
      */
     PageResult<SetMealVO> page(SetMealPageQueryDTO setMealPageQueryDTO);
+
+    /**
+     * 根据id查询套餐信息
+     * @param id 套餐id
+     * @return 套餐信息
+     */
+    SetMealVO getSetMealVOById(Long id);
 }

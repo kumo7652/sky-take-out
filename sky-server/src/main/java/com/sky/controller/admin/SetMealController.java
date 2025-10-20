@@ -42,4 +42,17 @@ public class SetMealController {
 
         return Result.success(pageResult);
     }
+
+    /**
+     * 通过id查询套餐信息
+     * @param id 套餐id
+     * @return Result
+     */
+    @GetMapping("/{id}")
+    public Result getById(@PathVariable Long id) {
+        log.info("查询id为{}的套餐", id);
+        SetMealVO setMealVO = setMealService.getSetMealVOById(id);
+
+        return Result.success(setMealVO);
+    }
 }

@@ -61,4 +61,24 @@ public class SetMealServiceImpl implements SetMealService {
 
         return new PageResult<>(p.getTotal(), p.getResult());
     }
+
+    /**
+     * 根据id查询套餐信息
+     * @param id 套餐id
+     * @return 套餐信息
+     */
+    @Override
+    public SetMealVO getSetMealVOById(Long id) {
+        SetMealVO setMealVO = new SetMealVO();
+
+        // 查询套餐信息
+        SetMeal setMeal = setMealMapper.getById(id);
+
+        // 查询关联菜品信息
+        List<SetMealDish> setMealDishes = setMealDishMapper.getBySetMealId(id);
+
+        BeanUtils.copyProperties(setMeal, setMealVO);
+        setMealVO.setSetMealDishes(setMealDishes);
+        return setMealVO;
+    }
 }
