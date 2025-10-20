@@ -32,4 +32,10 @@ public interface SetMealService {
      * @param id 套餐id
      */
     void switchStatus(Integer status, Long id);
+
+    /**
+     * 修改套餐
+     * @param setMealDTO 修改套餐对象
+     */
+    void update(SetMealDTO setMealDTO);
 }

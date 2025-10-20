@@ -97,4 +97,27 @@ public class SetMealServiceImpl implements SetMealService {
 
         setMealMapper.update(setMeal);
     }
+
+    /**
+     * 修改套餐
+     * @param setMealDTO 修改套餐对象
+     */
+    @Override
+    public void update(SetMealDTO setMealDTO) {
+        // 解析数据
+        SetMeal setMeal = new SetMeal();
+        BeanUtils.copyProperties(setMealDTO, setMeal);
+        List<SetMealDish> setMealDishes = setMealDTO.getSetMealDishes();
+
+        // 修改套餐信息
+        setMealMapper.update(setMeal);
+
+        // 修改套餐关联菜品信息
+        if (setMealDishes != null && !setMealDishes.isEmpty()) {
+            setMealDishMapper.deleteBatch(List.of(setMeal.getId()));
+
+            setMealDishes.forEach(setMealDish -> setMealDish.setSetMealId(setMeal.getId()));
+            setMealDishMapper.insert(setMealDishes);
+        }
+   }
 }

@@ -11,6 +11,14 @@
 
     </insert>
 
+    <delete id="deleteBatch">
+        delete from set_meal_dish
+        where set_meal_id in
+        <foreach collection="setMealIds" item="setMealId" separator="," open="(" close=")">
+            #{setMealId}
+        </foreach>
+    </delete>
+
     <select id="getSetMealByDishId" resultType="java.lang.Long">
         select set_meal_id
         from set_meal_dish

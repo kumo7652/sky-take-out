@@ -26,4 +26,10 @@ public interface SetMealDishMapper {
      * @return 菜品信息
      */
     List<SetMealDish> getBySetMealId(Long setMealId);
+
+    /**
+     * 批量删除套餐关联菜品
+     * @param setMealIds 套餐id集合
+     */
+    void deleteBatch(List<Long> setMealIds);
 }
