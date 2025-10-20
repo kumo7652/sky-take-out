@@ -119,6 +119,7 @@ public class SetMealServiceImpl implements SetMealService {
      * @param setMealDTO 修改套餐对象
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void update(SetMealDTO setMealDTO) {
         // 解析数据
         SetMeal setMeal = new SetMeal();
@@ -142,6 +143,7 @@ public class SetMealServiceImpl implements SetMealService {
      * @param ids 套餐id
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delete(List<Long> ids) {
         // 获取套餐状态
         ids.forEach(id -> {
