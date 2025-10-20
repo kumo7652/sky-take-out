@@ -3,6 +3,7 @@ package com.sky.service.impl;
 import com.sky.dto.SetMealDTO;
 import com.sky.entity.SetMeal;
 import com.sky.entity.SetMealDish;
+import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.service.SetMealService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SetMealServiceImpl implements SetMealService {
     private final SetMealMapper setMealMapper;
+    private final SetMealDishMapper setMealDishMapper;
 
     /**
      * 新增菜品信息
@@ -32,7 +34,12 @@ public class SetMealServiceImpl implements SetMealService {
         List<SetMealDish> setMealDishes = setMealDTO.getSetMealDishes();
 
         // 插入数据
-        // setMealMapper.insert(setMeal);
+        setMealMapper.insert(setMeal);
 
+        if (setMealDishes != null && !setMealDishes.isEmpty()) {
+            setMealDishes.forEach(setMealDish ->
+                    setMealDish.setSetMealId(setMeal.getId()));
+        }
+        setMealDishMapper.insert(setMealDishes);
     }
 }
