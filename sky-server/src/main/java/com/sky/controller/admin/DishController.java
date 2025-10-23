@@ -9,6 +9,7 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class DishController {
      * @return Result
      */
     @PostMapping
+    @CacheEvict(cacheNames = "dishCache", key = "#dishDTO.categoryId")
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品：{}", dishDTO);
         dishService.saveDishAndFlavors(dishDTO);
@@ -54,6 +56,7 @@ public class DishController {
      * @return Result
      */
     @DeleteMapping
+    @CacheEvict(cacheNames = "dishCache", allEntries = true)
     public Result delete(@RequestParam List<Long> ids) {
         log.info("删除菜品：{}", ids);
         dishService.delete(ids);
@@ -68,6 +71,7 @@ public class DishController {
      * @return Result
      */
     @PostMapping("/status/{status}")
+    @CacheEvict(cacheNames = "dishCache", allEntries = true)
     public Result switchStatus(@PathVariable Integer status, @RequestParam Long id) {
         log.info("启售禁售菜品：{}", id);
         dishService.switchStatus(status, id);
@@ -94,6 +98,7 @@ public class DishController {
      * @return Result
      */
     @PutMapping
+    @CacheEvict(cacheNames = "dishCache", allEntries = true)
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("更新菜品信息：{}",  dishDTO);
         dishService.update(dishDTO);
