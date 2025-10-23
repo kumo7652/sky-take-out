@@ -5,6 +5,7 @@ import com.sky.annotation.AutoFill;
 import com.sky.dto.SetMealPageQueryDTO;
 import com.sky.entity.SetMeal;
 import com.sky.enumeration.OperationType;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetMealVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -51,4 +52,19 @@ public interface SetMealMapper {
      * @param ids 套餐id
      */
     void deleteBatch(List<Long> ids);
+
+    /**
+     * 动态条件查询套餐
+     * @param setMeal 套餐对象
+     * @return 套餐列表
+     */
+    List<SetMeal> list(SetMeal setMeal);
+
+    /**
+     * 根据套餐id查询菜品选项
+     * @param setMealId 套餐id
+     * @return 菜品选项
+     */
+    List<DishItemVO> getDishItemBySetmealId(Long setmealId);
+
 }

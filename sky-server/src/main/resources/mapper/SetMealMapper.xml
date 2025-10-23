@@ -53,4 +53,25 @@
         from set_meal
         where id = #{id}
     </select>
+
+    <select id="getDishItemBySetmealId" resultType="com.sky.vo.DishItemVO">
+        select sd.name, sd.copies, d.image, d.description
+        from set_meal_dish sd left join dish d on sd.dish_id = d.id
+        where sd.set_meal_id = #{setmealId}
+    </select>
+
+    <select id="list" resultType="com.sky.entity.SetMeal">
+        select * from set_meal
+        <where>
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

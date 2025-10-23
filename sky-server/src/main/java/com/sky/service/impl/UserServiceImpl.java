@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
         claims.put(JwtClaimsConstant.USER_ID, user.getId());
 
         String token = JwtUtil.createJWT(
-                jwtProperties.getAdminSecretKey(), // 密钥
-                jwtProperties.getAdminTtl(), // 过期时间
+                jwtProperties.getUserSecretKey(), // 密钥
+                jwtProperties.getUserTtl(), // 过期时间
                 claims);
 
         // 返回结果

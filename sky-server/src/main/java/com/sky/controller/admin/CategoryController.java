@@ -16,7 +16,7 @@ import java.util.List;
  * 分类管理
  */
 @Slf4j
-@RestController
+@RestController("adminCategoryController")
 @RequestMapping("/admin/category")
 @RequiredArgsConstructor
 public class CategoryController {
@@ -31,6 +31,7 @@ public class CategoryController {
     public Result save(@RequestBody CategoryDTO categoryDTO) {
         log.info("新增分类：{}", categoryDTO);
         categoryService.save(categoryDTO);
+
         return Result.success();
     }
 

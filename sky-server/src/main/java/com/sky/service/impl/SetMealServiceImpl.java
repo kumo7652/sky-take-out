@@ -15,6 +15,7 @@ import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetMealService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetMealVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -126,6 +127,9 @@ public class SetMealServiceImpl implements SetMealService {
         BeanUtils.copyProperties(setMealDTO, setMeal);
         List<SetMealDish> setMealDishes = setMealDTO.getSetMealDishes();
 
+        // 修改之后默认禁用套餐
+        setMeal.setStatus(StatusConstant.DISABLE);
+
         // 修改套餐信息
         setMealMapper.update(setMeal);
 
@@ -158,5 +162,25 @@ public class SetMealServiceImpl implements SetMealService {
 
         // 删除套餐
         setMealMapper.deleteBatch(ids);
+    }
+
+    /**
+     * 条件查询
+     * @param setMeal 套餐对象
+     * @return 符合条件套餐
+     */
+    @Override
+    public List<SetMeal> list(SetMeal setMeal) {
+        return setMealMapper.list(setMeal);
+    }
+
+    /**
+     * 根据id查询菜品选项
+     * @param id 套餐id
+     * @return 菜品选项
+     */
+    @Override
+    public List<DishItemVO> getDishItemById(Long id) {
+        return setMealMapper.getDishItemBySetmealId(id);
     }
 }

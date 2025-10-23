@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@RestController
+@RestController("adminSetMealController")
 @RequiredArgsConstructor
 @RequestMapping("/admin/setmeal")
 public class SetMealController {
