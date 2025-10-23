@@ -7,6 +7,7 @@ import com.sky.service.SetMealService;
 import com.sky.vo.DishItemVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class SetMealController {
      * @param categoryId 分类id
      */
     @GetMapping("/list")
+    @Cacheable(cacheNames = "set_meal_cache", key="#categoryId")
     public Result list(Long categoryId) {
         SetMeal setmeal = new SetMeal();
         setmeal.setCategoryId(categoryId);

@@ -5,6 +5,7 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ public class DishController {
      * @param categoryId 分类id
      */
     @GetMapping("/list")
+    @Cacheable(cacheNames = "dishCache", key = "#categoryId")
     public Result list(Long categoryId) {
         log.info("客户端查询菜品");
         List<DishVO> list = dishService.listWithFlavor(categoryId);

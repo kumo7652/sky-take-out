@@ -8,6 +8,7 @@ import com.sky.service.SetMealService;
 import com.sky.vo.SetMealVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class SetMealController {
      * @return Result
      */
     @PostMapping
+    @CacheEvict(cacheNames = "set_meal_cache", key = "#setMealDTO.categoryId")
     public Result save(@RequestBody SetMealDTO setMealDTO) {
         log.info("保存套餐信息：{}", setMealDTO);
         setMealService.save(setMealDTO);
@@ -65,6 +67,7 @@ public class SetMealController {
      * @return Result
      */
     @PostMapping("/status/{status}")
+    @CacheEvict(cacheNames = "set_meal_cache",allEntries = true)
     public Result switchStatus(@PathVariable Integer status, @RequestParam Long id) {
         log.info("启用停用套餐：[{}, {}]", id, status);
         setMealService.switchStatus(status, id);
@@ -78,6 +81,7 @@ public class SetMealController {
      * @return Result
      */
     @PutMapping
+    @CacheEvict(cacheNames = "set_meal_cache",allEntries = true) // 可能出现修改分类情况
     public Result update(@RequestBody SetMealDTO setMealDTO) {
         log.info("修改套餐：{}", setMealDTO);
         setMealService.update(setMealDTO);
@@ -91,6 +95,7 @@ public class SetMealController {
      * @return Result
      */
     @DeleteMapping
+    @CacheEvict(cacheNames = "set_meal_cache",allEntries = true)
     public Result delete(@RequestParam List<Long> ids) {
         log.info("删除套餐：{}", ids.toString());
         setMealService.delete(ids);
