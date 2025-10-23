@@ -13,3 +13,7 @@ sky:
       bucket-name: springboot-demo76
       region: cn-beijing
 
+  wechat:
+    appid: wx8c8880d990726878
+    secret: f93189b713fdc47995f6ec3d7730649c
+
