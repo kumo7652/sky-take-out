@@ -35,8 +35,8 @@ public class ShoppingCartController {
     @GetMapping("/list")
     public Result list() {
         log.info("用户{}查看购物车", BaseContext.getCurrentId());
-        // List<ShoppingCart> shoppingCartList = shoppingCartService.list(BaseContext.getCurrentId());
+        List<ShoppingCart> shoppingCartList = shoppingCartService.list(BaseContext.getCurrentId());
 
-        return Result.success();
+        return Result.success(shoppingCartList);
     }
 }

@@ -25,4 +25,11 @@ public interface ShoppingCartMapper {
      * @param shoppingCart 购物车数据
      */
     void insert(ShoppingCart shoppingCart);
+
+    /**
+     * 查看当前用户购物车数据
+     * @param userId 当前用户id
+     * @return 用户购物车数据
+     */
+    List<ShoppingCart> getByUserId(Long userId);
 }
