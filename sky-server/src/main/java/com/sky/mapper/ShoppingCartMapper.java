@@ -32,4 +32,16 @@ public interface ShoppingCartMapper {
      * @return 用户购物车数据
      */
     List<ShoppingCart> getByUserId(Long userId);
+
+    /**
+     * 清空用户购物车
+     * @param shoppingCart 购物车对象
+     */
+    void deleteByUserId(ShoppingCart shoppingCart);
+
+    /**
+     * 删除购物车一个物品
+     * @param shoppingCart 购物车对象
+     */
+    void deleteById(ShoppingCart shoppingCart);
 }

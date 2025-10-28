@@ -181,6 +181,6 @@ public class SetMealServiceImpl implements SetMealService {
      */
     @Override
     public List<DishItemVO> getDishItemById(Long id) {
-        return setMealMapper.getDishItemBySetmealId(id);
+        return setMealMapper.getDishItemBySetMealId(id);
     }
 }

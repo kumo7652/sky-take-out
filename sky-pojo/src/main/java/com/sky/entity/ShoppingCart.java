@@ -1,5 +1,6 @@
 package com.sky.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCart implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     private Long id;
@@ -32,6 +32,7 @@ public class ShoppingCart implements Serializable {
     private Long dishId;
 
     //套餐id
+    @JsonProperty("setmealId")
     private Long setMealId;
 
     //口味
