@@ -171,7 +171,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 比对原密码
         if (!DigestUtils.md5DigestAsHex(passwordDTO.getOldPassword().getBytes())
                 .equals(employee.getPassword())) {
-            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+            throw new PasswordErrorException(MessageConstant.PASSWORD_EDIT_FAILED);
         }
 
         // 更新密码

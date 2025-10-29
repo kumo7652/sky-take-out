@@ -1,9 +1,13 @@
 package com.sky.service;
 
+import com.sky.dto.OrdersConfirmDTO;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.result.PageResult;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 
 public interface OrderService {
     /**
@@ -25,4 +29,17 @@ public interface OrderService {
      * @param outTradeNo 交易序号
      */
     void paySuccess(String outTradeNo);
+
+    /**
+     * 接单
+     * @param ordersConfirmDTO 订单id
+     */
+    void confirm(OrdersConfirmDTO ordersConfirmDTO);
+
+    /**
+     * 条件分页查询订单
+     * @param ordersPageQueryDTO 查询条件
+     * @return 查询结果
+     */
+    PageResult<OrderVO> page(OrdersPageQueryDTO ordersPageQueryDTO);
 }
