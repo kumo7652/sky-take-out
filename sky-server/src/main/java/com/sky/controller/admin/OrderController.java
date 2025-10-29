@@ -5,6 +5,7 @@ import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
+import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,5 +40,11 @@ public class OrderController {
         PageResult<OrderVO> pageResult = orderService.page(ordersPageQueryDTO);
 
         return Result.success(pageResult);
+    }
+
+    @GetMapping("/statistics")
+    public Result statistics() {
+        OrderStatisticsVO orderStatisticsVO = orderService.statistics();
+        return Result.success(orderStatisticsVO);
     }
 }

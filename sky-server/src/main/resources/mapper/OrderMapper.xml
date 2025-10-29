@@ -41,4 +41,10 @@
         </where>
         order by order_time desc
     </select>
+
+    <select id="countByStatus" resultType="java.lang.Integer">
+        select count(0)
+        from orders
+        where status = #{status}
+    </select>
 </mapper>
