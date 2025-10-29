@@ -107,10 +107,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      */
     @Override
     public void clean(Long currentId) {
-        ShoppingCart shoppingCart = ShoppingCart.builder()
-                .userId(currentId)
-                .build();
-
-        shoppingCartMapper.deleteByUserId(shoppingCart);
+        shoppingCartMapper.deleteByUserId(currentId);
     }
 }

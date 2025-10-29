@@ -19,6 +19,7 @@ public class AddressBookServiceImpl implements AddressBookService {
      * @param addressBook 地址查询条件
      * @return 用户地址信息
      */
+    @Override
     public List<AddressBook> list(AddressBook addressBook) {
         return addressBookMapper.list(addressBook);
     }
@@ -27,9 +28,11 @@ public class AddressBookServiceImpl implements AddressBookService {
      * 新增地址
      * @param addressBook 新增地址对象
      */
+    @Override
     public void save(AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
         addressBook.setIsDefault(0);
+
         addressBookMapper.insert(addressBook);
     }
 
@@ -38,6 +41,7 @@ public class AddressBookServiceImpl implements AddressBookService {
      * @param id 地址id
      * @return 对应地址信息
      */
+    @Override
     public AddressBook getById(Long id) {
         return addressBookMapper.getById(id);
     }
@@ -46,6 +50,7 @@ public class AddressBookServiceImpl implements AddressBookService {
      * 根据id修改地址
      * @param addressBook 地址信息
      */
+    @Override
     public void update(AddressBook addressBook) {
         addressBookMapper.update(addressBook);
     }
@@ -54,7 +59,8 @@ public class AddressBookServiceImpl implements AddressBookService {
      * 设置默认地址
      * @param addressBook 地址信息
      */
-    @Transactional
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void setDefault(AddressBook addressBook) {
         //1、将当前用户的所有地址修改为非默认地址 update address_book set is_default = ? where user_id = ?
         addressBook.setIsDefault(0);
@@ -70,8 +76,8 @@ public class AddressBookServiceImpl implements AddressBookService {
      * 根据id删除地址
      * @param id 地址id
      */
+    @Override
     public void deleteById(Long id) {
         addressBookMapper.deleteById(id);
     }
-
 }

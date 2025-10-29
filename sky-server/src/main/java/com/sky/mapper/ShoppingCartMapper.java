@@ -35,9 +35,9 @@ public interface ShoppingCartMapper {
 
     /**
      * 清空用户购物车
-     * @param shoppingCart 购物车对象
+     * @param userId 用户id
      */
-    void deleteByUserId(ShoppingCart shoppingCart);
+    void deleteByUserId(Long userId);
 
     /**
      * 删除购物车一个物品
