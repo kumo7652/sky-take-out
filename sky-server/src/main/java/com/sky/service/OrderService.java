@@ -59,4 +59,10 @@ public interface OrderService {
      * @param ordersRejectionDTO id以及原因
      */
     void reject(OrdersRejectionDTO ordersRejectionDTO);
+
+    /**
+     * 派送
+     * @param id 订单id
+     */
+    void delivery(Long id);
 }

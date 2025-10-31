@@ -158,6 +158,10 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
         }
 
+        if (!Orders.TO_BE_CONFIRMED.equals(orders.getStatus())) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
         orders.setStatus(Orders.CONFIRMED); // 已接单
         orderMapper.update(orders);
     }
@@ -218,12 +222,34 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
         }
 
+        if (!Orders.TO_BE_CONFIRMED.equals(orders.getStatus())) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
         orders.setStatus(Orders.CANCELLED); // 已拒单
-        orders.setPayStatus(Orders.REFUND); // 应退款
         orders.setCancelTime(LocalDateTime.now()); // 拒单时间
         orders.setRejectionReason(ordersRejectionDTO.getRejectionReason()); // 拒单原因
-        orders.setCancelReason(ordersRejectionDTO.getRejectionReason()); // 取消原因
 
+        orderMapper.update(orders);
+    }
+
+    /**
+     * 派送
+     * @param id 订单id
+     */
+    @Override
+    public void delivery(Long id) {
+        Orders orders = orderMapper.getById(id);
+
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        if (!Orders.CONFIRMED.equals(orders.getStatus())) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
         orderMapper.update(orders);
     }
 
