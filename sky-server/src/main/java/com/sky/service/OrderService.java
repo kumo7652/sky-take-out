@@ -73,7 +73,7 @@ public interface OrderService {
     void complete(Long id);
 
     /**
-     * 取消订单
+     * 管理端取消订单
      * @param ordersCancelDTO 订单取消对象
      */
     void cancel(OrdersCancelDTO ordersCancelDTO);
@@ -84,4 +84,10 @@ public interface OrderService {
      * @return 查询结果
      */
     PageResult<OrderVO> page4User(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    /**
+     * 用户端取消订单
+     * @param id 订单id
+     */
+    void cancel4User(Long id);
 }

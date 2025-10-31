@@ -321,6 +321,28 @@ public class OrderServiceImpl implements OrderService {
         return new PageResult<>(p.getPages(), orderVOList);
     }
 
+    /**
+     * 用户端取消订单
+     * @param id 订单id
+     */
+    @Override
+    public void cancel4User(Long id) {
+        Orders orders = orderMapper.getById(id);
+
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        if (Orders.DELIVERY_IN_PROGRESS.equals(orders.getStatus())) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelTime(LocalDateTime.now());
+
+        orderMapper.update(orders);
+    }
+
     // 对分页查询的结果进一步处理
     private List<OrderVO> getOrderVOList(Page<Orders> page) {
         // 获取订单菜品
