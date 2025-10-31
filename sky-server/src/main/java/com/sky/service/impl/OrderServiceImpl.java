@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -293,6 +294,31 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
 
         orderMapper.update(orders);
+    }
+
+    /**
+     * 用户条件分页查询
+     * @param ordersPageQueryDTO 查询条件
+     * @return 查询结果
+     */
+    @Override
+    public PageResult<OrderVO> page4User(OrdersPageQueryDTO ordersPageQueryDTO) {
+        Page<Orders> p = PageHelper
+                .startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize())
+                .doSelectPage(() -> orderMapper.pageQuery(ordersPageQueryDTO));
+
+        // 对查询的结果进行进一步处理
+        List<OrderVO> orderVOList = new ArrayList<>();
+
+        for (Orders orders : p) {
+            OrderVO orderVO = new OrderVO();
+            BeanUtils.copyProperties(orders, orderVO);
+
+            orderVO.setOrderDetailList(orderDetailMapper.getByOrderId(orders.getId()));
+            orderVOList.add(orderVO);
+        }
+
+        return new PageResult<>(p.getPages(), orderVOList);
     }
 
     // 对分页查询的结果进一步处理

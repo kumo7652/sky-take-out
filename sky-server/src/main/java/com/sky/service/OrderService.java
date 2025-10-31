@@ -77,4 +77,11 @@ public interface OrderService {
      * @param ordersCancelDTO 订单取消对象
      */
     void cancel(OrdersCancelDTO ordersCancelDTO);
+
+    /**
+     * 用户条件分页查询
+     * @param ordersPageQueryDTO 查询条件
+     * @return 查询结果
+     */
+    PageResult<OrderVO> page4User(OrdersPageQueryDTO ordersPageQueryDTO);
 }

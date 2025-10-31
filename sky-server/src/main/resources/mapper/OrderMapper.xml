@@ -29,9 +29,8 @@
     </select>
 
     <select id="pageQuery" resultType="com.sky.vo.OrderVO">
-        select o.*, ab.detail as address
-        from orders o join address_book ab
-        on o.address_book_id = ab.id
+        select o.*
+        from orders o
         <where>
             <if test="userId != null">o.user_id = #{userId}</if>
             <if test="beginTime != null and endTime != null">and o.order_time between #{beginTime} and #{endTime}</if>
