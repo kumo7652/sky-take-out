@@ -4,10 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersConfirmDTO;
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
@@ -68,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setPhone(addressBook.getPhone()); // 手机号
         orders.setConsignee(addressBook.getConsignee()); // 收货人
         orders.setAddressBookId(addressBook.getId()); // 收货地址
+        orders.setAddress(addressBook.getDetail()); // 收货地址
 
         orderMapper.insert(orders);
 
@@ -186,9 +184,47 @@ public class OrderServiceImpl implements OrderService {
         OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
         orderStatisticsVO.setToBeConfirmed(orderMapper.countByStatus(Orders.TO_BE_CONFIRMED));
         orderStatisticsVO.setConfirmed(orderMapper.countByStatus(Orders.CONFIRMED));
-        orderStatisticsVO.setDeliveryInProgress(orderMapper.countByStatus(Orders.DELIVERY_IN_PROGRESS))
-        ;
+        orderStatisticsVO.setDeliveryInProgress(orderMapper.countByStatus(Orders.DELIVERY_IN_PROGRESS));
+
         return orderStatisticsVO;
+    }
+
+    /**
+     * 根据id查询订单
+     * @param id 订单id
+     * @return 订单
+     */
+    @Override
+    public OrderVO getById(Long id) {
+        Orders orders = orderMapper.getById(id);
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(orders, orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+
+        return orderVO;
+    }
+
+    /**
+     * 拒单
+     * @param ordersRejectionDTO id以及原因
+     */
+    @Override
+    public void reject(OrdersRejectionDTO ordersRejectionDTO) {
+        Orders orders = orderMapper.getById(ordersRejectionDTO.getId());
+
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        orders.setStatus(Orders.CANCELLED); // 已拒单
+        orders.setPayStatus(Orders.REFUND); // 应退款
+        orders.setCancelTime(LocalDateTime.now()); // 拒单时间
+        orders.setRejectionReason(ordersRejectionDTO.getRejectionReason()); // 拒单原因
+        orders.setCancelReason(ordersRejectionDTO.getRejectionReason()); // 取消原因
+
+        orderMapper.update(orders);
     }
 
     // 对分页查询的结果进一步处理

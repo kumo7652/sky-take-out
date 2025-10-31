@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.OrdersConfirmDTO;
 import com.sky.dto.OrdersPageQueryDTO;
+import com.sky.dto.OrdersRejectionDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
@@ -42,9 +43,34 @@ public class OrderController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 统计各个状态订单数量
+     */
     @GetMapping("/statistics")
     public Result statistics() {
         OrderStatisticsVO orderStatisticsVO = orderService.statistics();
         return Result.success(orderStatisticsVO);
+    }
+
+    /**
+     * 查询订单详情
+     */
+    @GetMapping("/details/{id}")
+    public Result details(@PathVariable Long id) {
+        log.info("查询订单，id：{}", id);
+        OrderVO orderVO = orderService.getById(id);
+
+        return Result.success(orderVO);
+    }
+
+    /**
+     * 拒单
+     */
+    @PutMapping("/rejection")
+    public Result reject(@RequestBody OrdersRejectionDTO ordersRejectionDTO) {
+        log.info("拒单：{}", ordersRejectionDTO);
+        orderService.reject(ordersRejectionDTO);
+
+        return Result.success();
     }
 }
