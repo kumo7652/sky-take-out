@@ -186,9 +186,26 @@ public class OrderServiceImpl implements OrderService {
         OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
         orderStatisticsVO.setToBeConfirmed(orderMapper.countByStatus(Orders.TO_BE_CONFIRMED));
         orderStatisticsVO.setConfirmed(orderMapper.countByStatus(Orders.CONFIRMED));
-        orderStatisticsVO.setDeliveryInProgress(orderMapper.countByStatus(Orders.DELIVERY_IN_PROGRESS))
-        ;
+        orderStatisticsVO.setDeliveryInProgress(orderMapper.countByStatus(Orders.DELIVERY_IN_PROGRESS));
+
         return orderStatisticsVO;
+    }
+
+    /**
+     * 根据id查询订单
+     * @param id 订单id
+     * @return 订单
+     */
+    @Override
+    public OrderVO getById(Long id) {
+        Orders orders = orderMapper.getById(id);
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(orders, orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+
+        return orderVO;
     }
 
     // 对分页查询的结果进一步处理
