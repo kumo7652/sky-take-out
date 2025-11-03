@@ -17,3 +17,9 @@ sky:
     appid: wx8c8880d990726878
     secret: f93189b713fdc47995f6ec3d7730649c
 
+  shop:
+    address: 北京市海淀区上地十街10号
+
+  baidu:
+    ak: 6Q8EOa2FRe5I3OopEl5KwkspVhegHfO7
+

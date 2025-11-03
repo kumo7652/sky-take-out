@@ -46,4 +46,11 @@
         from orders
         where status = #{status}
     </select>
+
+    <select id="getByStatusAndOrderTimeLT" resultType="com.sky.entity.Orders">
+        select *
+        from orders
+        where status = #{status}
+          and order_time <![CDATA[<]]> #{orderTime}
+    </select>
 </mapper>
