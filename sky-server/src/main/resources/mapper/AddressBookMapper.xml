@@ -27,6 +27,15 @@
             <if test="consignee != null">
                 consignee = #{consignee},
             </if>
+            <if test="districtCode != null">
+                district_code = #{districtCode},
+            </if>
+            <if test="districtName != null">
+                district_name = #{districtName},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName},
+            </if>
             <if test="sex != null">
                 sex = #{sex},
             </if>
