@@ -53,4 +53,16 @@
         where status = #{status}
           and order_time <![CDATA[<]]> #{orderTime}
     </select>
+
+    <select id="getTodayTurnOver" resultType="java.math.BigDecimal">
+        select sum(amount)
+        from orders
+        where status = 5
+        <if test="beginTime != null">
+            and checkout_time <![CDATA[>=]]> #{beginTime}
+        </if>
+        <if test="endTime != null">
+            and checkout_time <![CDATA[<]]> #{endTime}
+        </if>
+    </select>
 </mapper>

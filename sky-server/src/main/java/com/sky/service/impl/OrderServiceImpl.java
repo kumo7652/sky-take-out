@@ -396,6 +396,29 @@ public class OrderServiceImpl implements OrderService {
         shoppingCartMapper.insertBatch(shoppingCartList);
     }
 
+    /**
+     * 客户催单
+     * @param id 订单id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders orders = orderMapper.getById(id);
+
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        // 通过webSocket向前端发送消息
+        Map<String,Object> map = new HashMap<>();
+
+        map.put("type", 2); // 客户催单
+        map.put("orderId", id); // 订单id
+        map.put("content", "订单号：" + orders.getNumber());
+
+        String jsonString = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
+    }
+
     // 对分页查询的结果进一步处理
     private List<OrderVO> getOrderVOList(Page<Orders> page) {
         // 获取订单菜品

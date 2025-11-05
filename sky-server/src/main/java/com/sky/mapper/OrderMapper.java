@@ -6,6 +6,7 @@ import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,4 +60,12 @@ public interface OrderMapper {
      * @return 超时订单
      */
     List<Orders> getByStatusAndOrderTimeLT(Integer status, LocalDateTime orderTime);
+
+    /**
+     * 查询当天营业额
+     * @param beginTime 当天起始
+     * @param endTime 当天结束
+     * @return 当天营业额
+     */
+    BigDecimal getTodayTurnOver(LocalDateTime beginTime, LocalDateTime endTime);
 }
