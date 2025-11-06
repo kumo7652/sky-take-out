@@ -10,6 +10,7 @@ import com.sky.vo.SetMealVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SetMealMapper {
@@ -67,4 +68,11 @@ public interface SetMealMapper {
      */
     List<DishItemVO> getDishItemBySetMealId(Long setMealId);
 
+
+    /**
+     * 根据条件统计套餐数量
+     * @param map 查询条件
+     * @return 套餐数量
+     */
+    Integer countByMap(Map<String, Object> map);
 }

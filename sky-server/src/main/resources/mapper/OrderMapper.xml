@@ -54,7 +54,7 @@
           and order_time <![CDATA[<]]> #{orderTime}
     </select>
 
-    <select id="getTodayTurnOver" resultType="java.math.BigDecimal">
+    <select id="getTurnOver" resultType="java.math.BigDecimal">
         select sum(amount)
         from orders
         where status = 5
@@ -66,7 +66,7 @@
         </if>
     </select>
 
-    <select id="getTodayOrderCount" resultType="java.lang.Integer">
+    <select id="getOrderCount" resultType="java.lang.Integer">
         select count(0)
         from orders
         <where>
@@ -78,5 +78,21 @@
                 and checkout_time <![CDATA[<]]> #{endTime}
             </if>
         </where>
+    </select>
+
+    <select id="getSalesTop10" resultType="com.sky.dto.GoodsSalesDTO">
+        select od.name, sum(od.number) number
+        from orders o join order_detail od
+        on o.id = od.order_id
+        where status = 5
+        <if test="beginTime != null">
+            and checkout_time <![CDATA[>=]]> #{beginTime}
+        </if>
+        <if test="endTime != null">
+            and checkout_time <![CDATA[<]]> #{endTime}
+        </if>
+        group by od.name
+        order by number
+        limit 0, 10
     </select>
 </mapper>
