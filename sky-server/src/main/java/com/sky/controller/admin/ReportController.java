@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 
 import com.sky.result.Result;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +39,23 @@ public class ReportController {
      */
     @GetMapping("/userStatistics")
     public Result userStatistics(@DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate begin,
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate end) {
+                                 @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate end) {
         log.info("统计从{}到{}用户数", begin, end);
         UserReportVO userReportVO = reportService.getUserStatistics(begin, end);
 
         return Result.success(userReportVO);
     }
+
+    /**
+     * 订单统计
+     */
+    @GetMapping("/ordersStatistics")
+    public Result ordersStatistics(@DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate begin,
+                                  @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate end) {
+        log.info("统计从{}到{}订单数、有效订单数", begin, end);
+        OrderReportVO orderReportVO = reportService.getOrdersStatistics(begin, end);
+
+        return Result.success(orderReportVO);
+    }
+
 }

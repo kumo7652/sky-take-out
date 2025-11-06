@@ -65,4 +65,18 @@
             and checkout_time <![CDATA[<]]> #{endTime}
         </if>
     </select>
+
+    <select id="getTodayOrderCount" resultType="java.lang.Integer">
+        select count(0)
+        from orders
+        <where>
+            <if test="status != null"> status = #{status}</if>
+            <if test="beginTime != null">
+                and checkout_time <![CDATA[>=]]> #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and checkout_time <![CDATA[<]]> #{endTime}
+            </if>
+        </where>
+    </select>
 </mapper>

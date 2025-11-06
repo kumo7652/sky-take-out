@@ -1,22 +1,28 @@
 package com.sky.service.impl;
 
+import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class ReportServiceImpl implements ReportService {
     private final OrderMapper orderMapper;
     private final UserMapper userMapper;
@@ -30,12 +36,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public TurnoverReportVO getTurnOverStatistics(LocalDate begin, LocalDate end) {
         // 计算日期列表
-        List<LocalDate> dateList = new ArrayList<>();
-
-        while (!begin.isAfter(end)) {
-            dateList.add(begin);
-            begin = begin.plusDays(1);
-        }
+        List<LocalDate> dateList = getDateList(begin, end);
 
         // 统计营业额
         List<BigDecimal> turnoverList = new ArrayList<>();
@@ -62,12 +63,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public UserReportVO getUserStatistics(LocalDate begin, LocalDate end) {
         // 计算日期列表
-        List<LocalDate> dateList = new ArrayList<>();
-
-        while (!begin.isAfter(end)) {
-            dateList.add(begin);
-            begin = begin.plusDays(1);
-        }
+        List<LocalDate> dateList = getDateList(begin, end);
 
         // 统计用户总量、新增用户数
         List<Integer> totalList = new ArrayList<>();
@@ -89,5 +85,65 @@ public class ReportServiceImpl implements ReportService {
                 .totalUserList(StringUtils.join(totalList, ","))
                 .newUserList(StringUtils.join(newUserList, ","))
                 .build();
+    }
+
+    /**
+     * 统计指定时间区间内订单数、有效订单数
+     * @param begin 时间开始
+     * @param end   时间结束
+     * @return 订单数、有效订单数
+     */
+    @Override
+    public OrderReportVO getOrdersStatistics(LocalDate begin, LocalDate end) {
+        // 计算日期列表
+        List<LocalDate> dateList = getDateList(begin, end);
+
+        // 统计每日订单数、有效订单数
+        List<Integer> orderCountList = new ArrayList<>();
+        List<Integer> validOrderCountList = new ArrayList<>();
+
+        Integer totalOrderCount = 0;
+        Integer totalValidOrderCount = 0;
+
+        Map<String, Object> con = new HashMap<>();
+
+        for (LocalDate date : dateList) {
+            LocalDateTime beginTime = date.atStartOfDay();
+            LocalDateTime endTime = date.plusDays(1).atStartOfDay();
+
+            con.put("beginTime", beginTime);
+            con.put("endTime", endTime);
+
+            Integer orderCount = orderMapper.getTodayOrderCount(con);
+            orderCountList.add(orderCount);
+            totalOrderCount += orderCount;
+
+            con.put("status", Orders.COMPLETED);
+
+            Integer validOrderCount = orderMapper.getTodayOrderCount(con);
+            validOrderCountList.add(validOrderCount);
+            totalValidOrderCount += validOrderCount;
+
+            con.remove("status");
+        }
+
+        return OrderReportVO.builder()
+                .dateList(StringUtils.join(dateList, ","))
+                .orderCountList(StringUtils.join(orderCountList, ","))
+                .validOrderCountList(StringUtils.join(validOrderCountList, ","))
+                .totalOrderCount(totalOrderCount)
+                .validOrderCount(totalValidOrderCount)
+                .orderCompletionRate(totalValidOrderCount.doubleValue() / totalOrderCount.doubleValue())
+                .build();
+    }
+
+    private List<LocalDate> getDateList(LocalDate begin, LocalDate end) {
+        List<LocalDate> dateList = new ArrayList<>();
+
+        while (!begin.isAfter(end)) {
+            dateList.add(begin);
+            begin = begin.plusDays(1);
+        }
+        return dateList;
     }
 }

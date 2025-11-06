@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -68,4 +69,11 @@ public interface OrderMapper {
      * @return 当天营业额
      */
     BigDecimal getTodayTurnOver(LocalDateTime beginTime, LocalDateTime endTime);
+
+    /**
+     * 查询当天订单数、有效订单数
+     * @param con 查询条件
+     * @return 当天订单数、有效订单数
+     */
+    Integer getTodayOrderCount(Map<String, Object> con);
 }

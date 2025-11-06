@@ -29,7 +29,7 @@ public class OrderTask {
 
         if (ordersList != null && !ordersList.isEmpty()) {
             for (Orders orders : ordersList) {
-                orders.setPayStatus(Orders.CANCELLED);
+                orders.setStatus(Orders.CANCELLED);
                 orders.setCancelReason("订单超时，自动取消");
                 orders.setCancelTime(LocalDateTime.now());
 
